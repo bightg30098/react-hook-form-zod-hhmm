@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 const empty = z.union([z.undefined(), z.string().trim().max(0)]);
-const nonEmpty = z.string().nonempty({ message: "required" });
+const nonEmpty = z.string().min(1, { message: "required" });
 
 const bothEmpty = z.object({
 	hour: empty,
