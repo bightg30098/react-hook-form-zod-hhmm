@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 const empty = z.union([z.undefined(), z.string().trim().max(0)]);
-const nonEmpty = z.string().min(1, { message: "required" });
+const nonEmpty = z.string().trim().min(1, { message: "required" });
 
 const bothEmpty = z.object({
 	hour: empty,
@@ -13,6 +13,10 @@ const bothNonEmpty = z
 		hour: nonEmpty,
 		minute: nonEmpty,
 	})
+	.transform((schema) => ({
+		hour: schema.hour.padStart(2, "0"),
+		minute: schema.minute.padStart(2, "0"),
+	}))
 	.superRefine((schema, ctx) => {
 		const hour = Number(schema.hour);
 		const minute = Number(schema.minute);
